@@ -10,5 +10,7 @@ INSERT INTO vendors (vendor) VALUES ('Yahoo! Finance'), ('Quandl');
 -- Insert a portfolio for testing purposes only. This portfolio is constructed
 -- by default for convenience so that it does not need to be added every time
 -- the database is torn down.
-INSERT INTO portfolios (portfolio, maximum_capacity, capital, updated) VALUES (
-'test_portfolio_id', 1, 100000.0, current_timestamp);
+INSERT INTO funds (fund, rebalance_period, manage_period, entry_date)
+VALUES ('test_fund_id', 1, 1, current_timestamp);
+INSERT INTO portfolios (portfolio, fund_id, maximum_capacity, capital, updated)
+VALUES ('test_portfolio_id', 1, 1, 100000.0, current_timestamp);
