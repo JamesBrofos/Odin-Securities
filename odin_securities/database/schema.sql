@@ -54,9 +54,9 @@ CREATE INDEX IF NOT EXISTS price_datetime_index ON prices (datetime);
 CREATE TABLE IF NOT EXISTS funds (
        id SERIAL PRIMARY KEY,
        fund varchar(100) UNIQUE NOT NULL,
-       rebalance_period int NOT NULL,
-       manage_period int NOT NULL,
-       entry_date timestamp NOT NULL
+       entry_date timestamp NOT NULL,
+       rebalance_period varchar(20),
+       manage_period varchar(20)
 );
 CREATE INDEX IF NOT EXISTS fund_index ON funds (fund);
 
@@ -78,7 +78,6 @@ CREATE TABLE IF NOT EXISTS positions (
        id SERIAL PRIMARY KEY,
        symbol_id int REFERENCES symbols (id),
        portfolio_id int REFERENCES portfolios (id),
-       quantity int NOT NULL,
        direction varchar(10) NOT NULL,
        trade_type varchar(10) NOT NULL,
        date_entered timestamp NOT NULL,
@@ -96,7 +95,7 @@ CREATE TABLE IF NOT EXISTS positions (
 -- For compliance purposes, create a table to store closed positions. These can
 -- be reviewed at a later date if required.
 CREATE TABLE IF NOT EXISTS closed_positions (
-LIKE positions EXCLUDING CONSTRAINTS
+       LIKE positions EXCLUDING CONSTRAINTS
 );
 
 -- The "actions" table stores information regarding corporate actions that may
@@ -112,4 +111,3 @@ CREATE TABLE IF NOT EXISTS actions (
        UNIQUE (symbol_id, vendor_id, datetime)
 );
 CREATE INDEX IF NOT EXISTS action_datetime_index ON actions (datetime);
-

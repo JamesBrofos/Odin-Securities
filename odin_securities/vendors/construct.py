@@ -4,7 +4,7 @@ from ..queries import exists, gets, inserts, deletes, updates
 def construct(vendor, symbol):
     # If this symbol is new to the Odin securities database, then insert it into
     # the symbols table.
-    if exists.symbol(symbol):
+    if not exists.symbol(symbol):
         inserts.symbol(symbol)
 
     # Extract the identifier for this symbol as well as the identifier for the
@@ -14,10 +14,8 @@ def construct(vendor, symbol):
 
     # Detect if the symbol can be downloaded from the vendor.
     if vendor.check_valid_symbol(symbol):
-        # Check if the symbol is already being served by the vendor. Recall that
-        # this first boolean returns true if the symbol is not servicing the
-        # symbol.
-        if exists.symbol_vendor(sid, vid):
+        # Check if the symbol is already being served by the vendor.
+        if not exists.symbol_vendor(sid, vid):
             # If the symbol is not being served by the vendor, then initialize
             # new price data from the asset's entire history.
             stock = vendor.download_stock(symbol)

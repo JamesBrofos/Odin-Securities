@@ -50,6 +50,11 @@ python3 constructor.py
 **Though this command takes a very long time to execute.** Therefore, it is recommended instead to build a smaller version of the database with Alphabet's, Facebook, and Amazon's stock prices with the command:
 
 ```
-python3 constructor.py GOOG FB AMZN
+python3 constructor.py -i 'GOOG FB AMZN'
 ```
 
+To update the data only for symbols that are already present in the database, supply the optional local `-l` argument:
+
+```
+python3 constructor.py -l
+```

@@ -1,3 +1,4 @@
+from .symbols import symbols
 from .id_for_portfolio import id_for_portfolio
 from .id_for_symbol import id_for_symbol
 from .id_for_vendor import id_for_vendor
