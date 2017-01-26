@@ -4,7 +4,7 @@ from pandas_datareader.data import DataReader
 from .download_splits_dividends import download_splits_dividends
 
 
-def download_stock(symbol, start_date=dt.datetime(2001, 1, 1)):
+def download_stock(symbol, start_date=dt.datetime(1990, 1, 1)):
     # Download assets.
     stock = DataReader(symbol, "yahoo", start_date)
     stock.rename(columns={"Adj Close": "Adj. Close"}, inplace=True)
