@@ -1,5 +1,6 @@
 import datetime as dt
 from ...connection_cursor import cur
+from ...io_params import IOFiles
 
 
 def portfolio(portfolio, fid):
@@ -7,6 +8,9 @@ def portfolio(portfolio, fid):
     (portfolio, fund_id, maximum_capacity, capital, updated)
     VALUES {}
     """.format((
-        portfolio.portfolio_id, fid, portfolio.maximum_capacity,
-        portfolio.capital, dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        portfolio.portfolio_id,
+        fid,
+        portfolio.maximum_capacity,
+        portfolio.capital,
+        dt.datetime.now().strftime(IOFiles.date_format.value)
     )))

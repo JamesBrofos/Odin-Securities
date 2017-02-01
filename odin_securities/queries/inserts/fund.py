@@ -1,4 +1,5 @@
 from ...connection_cursor import cur
+from ...io_params import IOFiles
 
 
 def fund(fund):
@@ -9,5 +10,5 @@ def fund(fund):
     VALUES %s
     """, (
         fund.fund_id, fund.rebalance_period, fund.manage_period,
-        fund.date_entered.strftime("%Y-%m-%d %H:%M:%S")
+        fund.date_entered.strftime(IOFiles.date_format.value)
     ))

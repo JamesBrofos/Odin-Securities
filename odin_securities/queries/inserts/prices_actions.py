@@ -1,4 +1,5 @@
 from ...connection_cursor import cur
+from ...io_params import IOFiles
 
 
 def prices_actions(stock, symbol_id, vendor_id):
@@ -20,7 +21,7 @@ def prices_actions(stock, symbol_id, vendor_id):
     # Iterate through all the dates in the stock price dataset and update the
     # database with the newly acquired data.
     for date_idx in stock.index:
-        string_date = str(date_idx)
+        string_date = date_idx.strftime(IOFiles.date_format.value)
         price_v = list(stock[price_cols].ix[date_idx])
         a = stock[action_cols].ix[date_idx]
         action_v = list(a)
