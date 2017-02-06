@@ -48,6 +48,9 @@ CREATE TABLE IF NOT EXISTS prices (
        UNIQUE (symbol_id, vendor_id, datetime)
 );
 CREATE INDEX IF NOT EXISTS price_datetime_index ON prices (datetime);
+CREATE INDEX IF NOT EXISTS price_datetime_vendor_symbol_index ON prices (
+       datetime, vendor_id, symbol_id
+);
 
 -- The "funds" table stores funds and can be leveraged to identify which
 -- portfolios are associated with a given fund.
@@ -111,3 +114,6 @@ CREATE TABLE IF NOT EXISTS actions (
        UNIQUE (symbol_id, vendor_id, datetime)
 );
 CREATE INDEX IF NOT EXISTS action_datetime_index ON actions (datetime);
+CREATE INDEX IF NOT EXISTS action_datetime_vendor_symbol_index ON actions (
+       datetime, vendor_id, symbol_id
+);

@@ -44,17 +44,13 @@ def prices(
     # requested.
     fields = ["price_open", "price_high", "price_low", "price_close", "volume"]
     fields = ["p.adj_" + f if adjusted else "p." + f for f in fields]
-
-    # qry = """
-    # SELECT s.symbol, p.datetime, {} FROM (select *,
-    # row_number() OVER (PARTITION BY datetime ORDER BY vendor_id) AS rownum
-    # FROM prices) AS p JOIN symbols AS s ON p.symbol_id=s.id WHERE {}
-    # p.datetime >= '{}' AND p.datetime <= '{}' AND p.rownum < 2
-    # """.format(", ".join(fields), symbol_cond, start_date, end_date)
     qry = """
-    SELECT DISTINCT ON (p.datetime, s.symbol) s.symbol, p.datetime, {} FROM
-    prices AS p JOIN symbols AS s ON p.symbol_id=s.id WHERE {} p.datetime >=
-    '{}' AND p.datetime <= '{}' ORDER BY p.datetime, s.symbol, p.vendor_id
+    SELECT DISTINCT ON (p.datetime, s.symbol) s.symbol, p.datetime, {}
+    FROM prices AS p
+    JOIN symbols AS s ON
+    p.symbol_id=s.id WHERE {}
+    p.datetime >= '{}' AND p.datetime <= '{}'
+    ORDER BY p.datetime, s.symbol, p.vendor_id
     """.format(", ".join(fields), symbol_cond, start_date, end_date)
     prices = pd.read_sql(qry, conn, index_col=["datetime", "symbol"]).to_panel()
 
