@@ -47,3 +47,7 @@ def construct(vendor, symbol):
                 # Send the new data to the database.
                 inserts.prices_actions(stock, sid, vid)
                 updates.symbol_vendor(sid, vid, update_remote)
+    else:
+        print("Symbol {} is not supported by vendor {}.".format(
+            symbol, vendor.name
+        ))

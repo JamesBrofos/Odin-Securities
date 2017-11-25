@@ -2,7 +2,7 @@ import requests
 import urllib
 from time import sleep
 from .connection_cursor import conn
-from .vendors import quandl, yahoo_finance, construct, supported_vendors
+from .vendors import construct, supported_vendors
 from .queries import gets, deletes
 
 

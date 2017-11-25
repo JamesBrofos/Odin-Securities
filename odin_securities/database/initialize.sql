@@ -5,7 +5,8 @@
 -- other data vendors there might be is significant). This is because the
 -- smaller the vendor id, the more its data is prioritized in price and volume
 -- queries to the database.
-INSERT INTO vendors (vendor) VALUES ('Yahoo! Finance'), ('Quandl');
+INSERT INTO vendors (vendor)
+VALUES ('Yahoo! Finance'), ('Quandl');
 
 -- Insert a portfolio for testing purposes only. This portfolio is constructed
 -- by default for convenience so that it does not need to be added every time

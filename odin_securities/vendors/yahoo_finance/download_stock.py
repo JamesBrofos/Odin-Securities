@@ -5,6 +5,25 @@ from .download_splits_dividends import download_splits_dividends
 
 
 def download_stock(symbol, start_date=dt.datetime(1990, 1, 1)):
+    # Because Yahoo! Finance has recently took down their API, I will instead
+    # try to download the stock ten times before giving up.
+    for i in range(10):
+        try:
+            return __download_stock(symbol, start_date)
+        except:
+            print(
+                "Attempt {} to download {} from Yahoo! Finance failed.".format(
+                    i, symbol
+                )
+            )
+            continue
+    else:
+        raise ValueError(
+            "Could not download {} from Yahoo! Finance despite it being a valid"
+            "ticker.".format(symbol)
+        )
+
+def __download_stock(symbol, start_date):
     # Download assets.
     stock = DataReader(symbol, "yahoo", start_date)
     stock.rename(columns={"Adj Close": "Adj. Close"}, inplace=True)
@@ -16,27 +35,4 @@ def download_stock(symbol, start_date=dt.datetime(1990, 1, 1)):
     stock["Adj. Volume"] = stock["Volume"] * ratio
     stock["Split Ratio"] = 1.0
     stock["Ex-Dividend"] = 0.0
-
-    # Fetch the dividends and splits for this stock. Notice that we restrict the
-    # dates to lie in the appropriate range.
-    ds = download_splits_dividends(symbol)
-
-    # Store dividend data.
-    if "DIVIDEND" in ds.index:
-        divs = ds.ix[["DIVIDEND"]].set_index("datetime")
-        idx = divs.index.intersection(stock.index)
-        stock.ix[idx, "Ex-Dividend"] = [
-            float(x) for x in divs.ix[idx, "adjustment"]
-        ]
-
-    # Store stock split data.
-    if "SPLIT" in ds.index:
-        splits = ds.ix[["SPLIT"]].set_index("datetime")
-        splits["adjustment"] = [
-            float(x.split(":")[0]) / float(x.split(":")[1])
-            for x in splits["adjustment"]
-        ]
-        idx = splits.index.intersection(stock.index)
-        stock.ix[idx, "Split Ratio"] = splits.ix[idx, "adjustment"]
-
     return stock
